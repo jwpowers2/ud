@@ -41,6 +41,7 @@ def enter(request):
             request.session['status'] = True
             request.session['id'] = user.id
             request.session['first_name'] = user.first_name
+            request.session['user_level'] = user.user_level
             return redirect('/users/show/{}'.format(user.id))
 
     except:
@@ -57,11 +58,12 @@ def create(request):
     else:
 
         password_hash = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt())
-        Users.objects.create(first_name=request.POST['first_name'],last_name=request.POST['last_name'],email=request.POST['email'],password=password_hash)
+        Users.objects.create(first_name=request.POST['first_name'],last_name=request.POST['last_name'],email=request.POST['email'],password=password_hash, user_level=1)
         request.session['status'] = True
         user = Users.objects.get(email=request.POST['email'])
         request.session['id'] = user.id
         request.session['first_name'] = user.first_name
+        request.session['user_level'] = user.user_level
         return redirect('/users/show/{}'.format(user.id))
 
     return redirect('/register')

@@ -23,8 +23,13 @@
           <a class="navbar-brand" href="/">Test App</a>
         </div>
       <ul class="nav navbar-nav">
-      
-      <li><a href="/dashboard">Dashboard</a></li>
+     <!-- a form to a route which checks user level to redirect to appropriate dashboard  -->
+      <li>
+      <form action="/dashboard/decision/" method="post">    
+        {% csrf_token %}
+          <input type="submit" value="Dashboard" style="border:none;background:none;color:gray;padding:15px;">
+      </form>
+      </li>
       <li><a href="/users/edit">Profile</a></li>
       <li><a href="/logoff">Logoff</a></li>
     </ul>

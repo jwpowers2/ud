@@ -34,3 +34,10 @@ def admin(request):
     context = { 'user_list':users2}
     return render(request, 'dashboard/admin.html',context)
 
+def decision(request):
+
+    # decide to redirect to admin or to index depending on user leve
+    
+    user = Users.objects.get(id=request.session['id'])
+    print user.user_level
+    return redirect('/index')
