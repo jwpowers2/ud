@@ -30,7 +30,12 @@
           <input type="submit" value="Dashboard" style="border:none;background:none;color:gray;padding:15px;">
       </form>
       </li>
-      <li><a href="/users/edit">Profile</a></li>
+      <li>
+      <form action="/users/decision/" method="post">    
+        {% csrf_token %}
+          <input type="submit" value="Profile" style="border:none;background:none;color:gray;padding:15px;">
+      </form>
+      </li>
       <li><a href="/logoff">Logoff</a></li>
     </ul>
     </div>
@@ -53,7 +58,7 @@
              <td>{{user.first_name}} {{user.last_name}}</td>
              <td>{{user.email}}</td>
              <td>{{user.created_at|date:'F d, Y'}}</td>
-             <td>{{user.level}}</td>
+             <td>{{user.user_level}}</td>
           </tr>
           {% endfor %}
         </tbody>

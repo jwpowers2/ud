@@ -21,5 +21,4 @@ urlpatterns = [
     url(r'^', include('apps.login.urls')),
     url(r'^dashboard/', include('apps.dashboard.urls')),
     url(r'^users/', include('apps.users.urls')),
-    url(r'^logoff', include('apps.login.urls')),
 ]

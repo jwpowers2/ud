@@ -37,7 +37,10 @@ def admin(request):
 def decision(request):
 
     # decide to redirect to admin or to index depending on user leve
-    
+    print request.session['id']    
     user = Users.objects.get(id=request.session['id'])
-    print user.user_level
-    return redirect('/index')
+    if user.user_level == '1':
+        return redirect('/dashboard/')
+    if user.user_level == '9':
+        return redirect('/dashboard/admin')
+    return redirect('/dashboard/admin')

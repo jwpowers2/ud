@@ -62,7 +62,7 @@ def new(request):
     }
     return render(request, 'users/new_user.html', context)
 
-def edit(request):
+def admin_edit_user(request):
 
     if request.session['status'] == False:
         return redirect('/')
@@ -72,7 +72,7 @@ def edit(request):
     }
     return render(request, 'users/edit_user.html', context)
 
-def edituser(request,id):
+def edit_user(request,id):
 
     if request.session['status'] == False:
         return redirect('/')
@@ -134,3 +134,13 @@ def create_comment(request, messageid, userid):
 
         return redirect('/register')
     '''
+def decision(request):
+
+    # decide to redirect to admin or to index depending on user leve
+    print request.session['id']    
+    user = Users.objects.get(id=request.session['id'])
+    if user.user_level == '1':
+        return redirect('/users/edit_user')
+    if user.user_level == '9':
+        return redirect('/dashboard/admin')
+    return redirect('/users/admin_edit_user')
