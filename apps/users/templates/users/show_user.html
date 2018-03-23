@@ -1,0 +1,83 @@
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title></title>
+      {% load static %}
+    <link rel="stylesheet" href="{% static 'login/css/style.css' %}" media="screen" title="no title"  charset="utf-8">
+  </head>
+
+    <body>
+
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Test App</a>
+        </div>
+      <ul class="nav navbar-nav">
+      
+      <li><a href="/dashboard">Dashboard</a></li>
+      <li><a href="/users/edit">Profile</a></li>
+      <li><a href="/users/logoff">Logoff</a></li>
+    </ul>
+    </div>
+    </nav>
+    <div class="container">
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages_list %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+          <div class="form-group">
+	    <form action='/users/{{request.session.id}}/create_message/' method='post'>
+              {% csrf_token %}
+              <textarea name='message' class="form-control" placeholder="Add a message here"></textarea>
+              <br>
+              <input class="btn" type='submit' id='button' value='Submit'>
+            </form>
+          </div>
+        <br>
+    </div>
+    <div class="container">
+        <br>
+        <br>
+        {% for m in m_list %}
+        <br>
+            
+          <div class="well">
+
+             <p>{{m.first_name}} {{ m.last_name }} {{ m.created_at}}</p> 
+
+             <p class="lead">{{ m.message}}</p>
+             <div class="form-group"> 
+	       <form action='/users/create_comment/{{m.id}}/{{request.session.id}}/' method='post'>
+                 {% csrf_token %}
+                 <textarea name='comment' class="form-control" placeholder="add a comment here"></textarea>
+                 <input class='btn' type='submit' id='button' value='Submit'>
+
+               </form>
+             </div>
+
+           </div>
+          
+        {% if m.comments %}
+        {% for comment in m.comments.comment_list %}
+           <div class="col-lg col-centered">            
+             <p>{{comment.user_comment_id.first_name}} {{comment.user_comment_id.last_name}} {{comment.created_at}}</p>
+             <p>{{comment.comment}}</p>
+           </div>
+	{% endfor %}
+        {% endif %}
+      {% endfor %}
+
+  </div>
+  </body>
+</html>
+
+

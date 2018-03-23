@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title></title>
+      {% load static %}
+    <link rel="stylesheet" href="{% static 'store/css/style.css' %}" media="screen" title="no title"  charset="utf-8">
+    <!-- The line above tells Django to be ready to listen for static files -->
+    <!-- Put the static files in the static folder inside your app.  Django collects files within all static folders and puts them within a single folder -->    
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Test App</a>
+        </div>
+      <ul class="nav navbar-nav">
+      
+      <li><a href="/">Home</a></li>
+      <li><a href="/signin">signin</a></li>
+    </ul>
+    </div>
+    </nav>
+    <div class="container">
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    <div class="container">
+      <h2>Register</h2>
+      <form action="/create/" method="POST">
+        {% csrf_token %}
+        
+        <input name="first_name" type="text" placeholder="first name"><br><br> 
+        <input name="last_name" type="text" placeholder="last name"><br><br> 
+        <input name="email" type="text" placeholder="email"><br><br> 
+        <input name="password" type="text" placeholder="password"><br><br> 
+        <input name="confirm_password" type="text" placeholder="confirm password"><br><br> 
+        <input class="btn" type="submit" value="submit"><br>
+      </form>
+    <a href="/signin">Already have an account? Sign in</a>
+    </div>
+    </body>
+</html>

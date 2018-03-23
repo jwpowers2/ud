@@ -1,0 +1,59 @@
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+      <!-- jQuery library -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+      <!-- Latest compiled JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <title></title>
+        {% load static %}
+      <link rel="stylesheet" href="{% static 'store/css/style.css' %}" media="screen" title="no title"  charset="utf-8">
+      <!-- The line above tells Django to be ready to listen for static files -->
+      <!-- Put the static files in the static folder inside your app.  Django collects files within all static folders and puts them within a single folder -->    
+      </head>
+    <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Test App</a>
+        </div>
+      <ul class="nav navbar-nav">
+      
+      <li><a href="/dashboard">Dashboard</a></li>
+      <li><a href="/users/edit">Profile</a></li>
+      <li><a href="/logoff">Logoff</a></li>
+    </ul>
+    </div>
+    </nav>
+        <div class="container">
+        <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Created At</th>
+            <th>User level</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in user_list %}
+          <tr>
+             <td>{{user.id}}</td>
+             <td>{{user.first_name}} {{user.last_name}}</td>
+             <td>{{user.email}}</td>
+             <td>{{user.created_at|date:'F d, Y'}}</td>
+             <td>{{user.level}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </body>
+  </html>
+
