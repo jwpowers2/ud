@@ -142,5 +142,5 @@ def decision(request):
     if user.user_level == '1':
         return redirect('/users/edit_user')
     if user.user_level == '9':
-        return redirect('/dashboard/admin')
+        return redirect('/users/admin_edit_user')
     return redirect('/users/admin_edit_user')
