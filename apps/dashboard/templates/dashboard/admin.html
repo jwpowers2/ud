@@ -2,19 +2,12 @@
   <html>
     <head>
       <meta charset="utf-8">
-      <!-- Latest compiled and minified CSS -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-      <!-- jQuery library -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-      <!-- Latest compiled JavaScript -->
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <title></title>
         {% load static %}
       <link rel="stylesheet" href="{% static 'store/css/style.css' %}" media="screen" title="no title"  charset="utf-8">
-      <!-- The line above tells Django to be ready to listen for static files -->
-      <!-- Put the static files in the static folder inside your app.  Django collects files within all static folders and puts them within a single folder -->    
       </head>
     <body>
     <nav class="navbar navbar-inverse">
@@ -23,7 +16,6 @@
           <a class="navbar-brand" href="/">Test App</a>
         </div>
       <ul class="nav navbar-nav">
-      
       <li>
       <form action="/dashboard/decision/" method="post">    
         {% csrf_token %}
@@ -58,21 +50,21 @@
              <td>{{user.first_name}} {{user.last_name}}</td>
              <td>{{user.email}}</td>
              <td>{{user.created_at|date:'F d, Y'}}</td>
-             
              <td>{{user.user_level}}</td>
              <td>
+
                <form action="/users/admin_edit_user/{{user.id}}/" method="POST">
                    {% csrf_token %}
                    
                  <input type="submit" value="Edit" style="border:none;background:none;padding:15px;">
-                   
                </form>
+
                <form action="/users/remove_user/{{user.id}}/" method="POST">
                    {% csrf_token %}
                    
                  <input type="submit" value="Remove" style="border:none;background:none;padding:15px;">
-                   
                </form>
+
              </td>
              
           </tr>

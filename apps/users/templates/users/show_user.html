@@ -9,31 +9,28 @@
       {% load static %}
     <link rel="stylesheet" href="{% static 'login/css/style.css' %}" media="screen" title="no title"  charset="utf-8">
   </head>
-
     <body>
-
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="/">Test App</a>
         </div>
       <ul class="nav navbar-nav">
-      
-      <li>
-      <form action="/dashboard/decision/" method="post">    
-        {% csrf_token %}
-          <input type="submit" value="Dashboard" style="border:none;background:none;color:gray;padding:15px;">
-      </form>
-      </li>
-      <li>
-      <form action="/users/decision/{{request.session.id}}/" method="post">    
-        {% csrf_token %}
-          <input type="submit" value="Profile" style="border:none;background:none;color:gray;padding:15px;">
-      </form>
-      </li>
-      <li><a href="/users/logoff">Logoff</a></li>
-    </ul>
-    </div>
+        <li>
+          <form action="/dashboard/decision/" method="post">    
+            {% csrf_token %}
+              <input type="submit" value="Dashboard" style="border:none;background:none;color:gray;padding:15px;">
+          </form>
+        </li>
+        <li>
+          <form action="/users/decision/{{request.session.id}}/" method="post">    
+            {% csrf_token %}
+            <input type="submit" value="Profile" style="border:none;background:none;color:gray;padding:15px;">
+          </form>
+        </li>
+        <li><a href="/users/logoff">Logoff</a></li>
+      </ul>
+      </div>
     </nav>
     <div class="container">
         {% if messages %}

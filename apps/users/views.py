@@ -16,8 +16,6 @@ def logoff(request):
 
 def show(request,id):
 
-    #messages.info(request, "")
-
     if request.session['status'] == False:
         return redirect('/')
 
@@ -48,6 +46,7 @@ def show(request,id):
     return render(request, 'users/show_user.html', context)
 
 def new(request):
+
     if request.session['status'] == False:
         return redirect('/')
 
@@ -59,6 +58,7 @@ def new(request):
     return render(request, 'users/new_user.html', context)
 
 def show_profile(request,profile_id):
+
     if request.session['status'] == False:
         return redirect('/')
     messages.info(request, "")
@@ -84,6 +84,7 @@ def admin_edit_user(request,id_to_edit):
     return render(request, 'users/admin_edit_user.html', context)
 
 def edit_user(request,id_to_edit):
+
     if request.session['status'] == False:
         return redirect('/')
     messages.info(request, "")
@@ -96,6 +97,7 @@ def edit_user(request,id_to_edit):
     return render(request, 'users/edit_user.html', context)
 
 def update_user(request,id_to_update):
+
     if request.session['status'] == False:
         return redirect('/')
     messages.info(request, "")
@@ -161,39 +163,17 @@ def create_message(request, id):
         
 def create_comment(request, messageid, userid):
 
-    # I need user id and message id to get the objects to create this
-    user = Users.objects.get(id=userid)
-    message = Messages.objects.get(id=messageid)
-    Comments.objects.create(comment=request.POST['comment'],user_message_id=message,user_comment_id=user)
-    messages.info(request, "message received")
-    return redirect('/users/show/{}'.format(user.id))
+    try:
+        user = Users.objects.get(id=userid)
+        message = Messages.objects.get(id=messageid)
+        Comments.objects.create(comment=request.POST['comment'],user_message_id=message,user_comment_id=user)
+        
+        return redirect('/users/show/{}'.format(user.id))
+    except:
+        return redirect('/users/show/{}'.format(user.id))
 
-
-    '''
-    errors = Comments.objects.basic_validator(request.POST)
-
-    if len(errors):
-        for tag, error in errors.iteritems():
-            messages.error(request, error)
-    else:
-        try:
-            # I need user id and message id to get the objects to create this
-            user = Users.objects.get(id=userid)
-            message = Messages.objects.get(id=messageid)
-            Comments.objects.create(comment=request.POST['comment'],user_message_id=message,user_comment_id=user)
-            messages.info(request, "message received")
-            return redirect('/users/show/{}'.format(user.id))
-
-        except:
-            messages.error(request, "error with message")
-            return redirect('/users/show/{}'.format(id))
-
-        return redirect('/register')
-    '''
 def decision(request,id_to_edit):
 
-    # decide to redirect to admin or to index depending on user leve
-    print request.session['id']    
     user = Users.objects.get(id=request.session['id'])
     if user.user_level == '1':
         return redirect('/users/edit_user/{}/'.format(id_to_edit))

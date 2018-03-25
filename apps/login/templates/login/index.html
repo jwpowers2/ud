@@ -1,21 +1,13 @@
-
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-    <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title></title>
       {% load static %}
     <link rel="stylesheet" href="{% static 'login/css/style.css' %}" media="screen" title="no title"  charset="utf-8">
-    <!-- The line above tells Django to be ready to listen for static files -->
-    <!-- Put the static files in the static folder inside your app.  Django collects files within all static folders and puts them within a single folder -->    
   </head>
   <body>
     <nav class="navbar navbar-inverse">
@@ -26,17 +18,27 @@
       <ul class="nav navbar-nav">
       
       <li><a href="/">Home</a></li>
-      <li><a href="/signin">signin</a></li>
+      {% if request.session.status == False %}
+        <li><a href="/signin">signin</a></li>
+      {% endif %}
+      {% if request.session.status == True %}
+        <li style="color:gray; padding:15px;">Hello, {{request.session.first_name}}</li>
+      {% endif %}
     </ul>
     </div>
     </nav>
     <div class="container">
       <div class="hero">
           <h2 class="hero-text">Welcome to the Test</h2>
+          {% if request.session.status == True %}
           <form action="/users/show/{{request.session.id}}/" method="POST">
             {% csrf_token %}
             <input class="btn" type="submit" name="submit" value="Enter site">
           </form>
+          {% endif %}
+          {% if request.session.status == False %}
+            <a href="/signin/"><p style="text-decoration:none;">Enter site</p></a>
+          {% endif %}
       </div>
     </div>
     </body>
