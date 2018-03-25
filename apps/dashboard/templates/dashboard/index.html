@@ -31,7 +31,7 @@
       </form>
       </li>
       <li>
-      <form action="/users/decision/" method="post">    
+      <form action="/users/show_profile/{{request.session.id}}/" method="post">    
         {% csrf_token %}
           <input type="submit" value="Profile" style="border:none;background:none;color:gray;padding:15px;">
       </form>

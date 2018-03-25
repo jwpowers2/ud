@@ -31,7 +31,7 @@
       </form>
       </li>
       <li>
-      <form action="/users/decision/" method="post">    
+      <form action="/users/show_profile/{{request.session.id}}/" method="post">    
         {% csrf_token %}
           <input type="submit" value="Profile" style="border:none;background:none;color:gray;padding:15px;">
       </form>
@@ -48,7 +48,7 @@
             <th>Full Name</th>
             <th>Email</th>
             <th>Created At</th>
-            <th>User level</th>
+            <th>User Level</th>
           </tr>
         </thead>
         <tbody>
@@ -58,13 +58,23 @@
              <td>{{user.first_name}} {{user.last_name}}</td>
              <td>{{user.email}}</td>
              <td>{{user.created_at|date:'F d, Y'}}</td>
+             
+             <td>{{user.user_level}}</td>
              <td>
-               <a href="/users/edit">Edit</a>
-               <form action="/dashboard/{{user.id}}/remove" method="POST">
-                 {% csrf_token %}
-                 <input type="submit" name="submit" value="remove">
+               <form action="/users/admin_edit_user/{{user.id}}/" method="POST">
+                   {% csrf_token %}
+                   
+                 <input type="submit" value="Edit" style="border:none;background:none;padding:15px;">
+                   
+               </form>
+               <form action="/users/remove_user/{{user.id}}/" method="POST">
+                   {% csrf_token %}
+                   
+                 <input type="submit" value="Remove" style="border:none;background:none;padding:15px;">
+                   
                </form>
              </td>
+             
           </tr>
           {% endfor %}
         </tbody>

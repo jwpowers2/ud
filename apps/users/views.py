@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+import bcrypt
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.apps import apps
@@ -16,16 +16,18 @@ def logoff(request):
 
 def show(request,id):
 
+    #messages.info(request, "")
+
     if request.session['status'] == False:
         return redirect('/')
 
     messages = Messages.objects.all()
     m1 = list(messages)
     m2 = []
+
     for message in m1:
+
         m_dict = {}
-        # I need to get message user id not session user id and pass it in url
-        # this is always getting the user that is logged in
         user = Users.objects.filter(id=message.user_message_id.id)
         m_dict['first_name'] = user[0].first_name
         m_dict['last_name'] = user[0].last_name
@@ -37,50 +39,104 @@ def show(request,id):
     
     for message in m2:
         comment_dict = {}
-        
-        # I am showing the logged in user as author of the message -- not the person who wrote it
-
         print message
         comments = Comments.objects.filter(user_message_id = message['id'])
-        
-        
         comment_dict['comment_list'] = list(comments)
-        # how do I attach user info to comments
         message['comments'] = comment_dict
-        #print message
 
     context = { 'm_list':m2}
     return render(request, 'users/show_user.html', context)
-    #return redirect("/")
-def new(request):
 
+def new(request):
     if request.session['status'] == False:
         return redirect('/')
+
+    messages.info(request, "")
 
     context = {
         "word":"stuff"
     }
     return render(request, 'users/new_user.html', context)
 
-def admin_edit_user(request):
+def show_profile(request,profile_id):
+    if request.session['status'] == False:
+        return redirect('/')
+    messages.info(request, "")
+    user = Users.objects.filter(id=profile_id)
+    context = {
+               'name': '{} {}'.format(user[0].first_name, user[0].last_name),
+               'email': user[0].email,
+               'id':user[0].id
+              }
+    return render(request, 'users/show_profile.html', context)
+
+def admin_edit_user(request,id_to_edit):
 
     if request.session['status'] == False:
         return redirect('/')
-
+    messages.info(request, "")
+    errors = Users.objects.basic_validator(request.POST)
+    user_to_edit = Users.objects.filter(id=id_to_edit)
     context = {
-        "word":"stuff"
+        "first_name":user_to_edit[0].first_name,
+        "id":user_to_edit[0].id
+    }
+    return render(request, 'users/admin_edit_user.html', context)
+
+def edit_user(request,id_to_edit):
+    if request.session['status'] == False:
+        return redirect('/')
+    messages.info(request, "")
+    errors = Users.objects.basic_validator(request.POST)
+    user_to_edit = Users.objects.filter(id=id_to_edit)
+    context = {
+        "first_name":user_to_edit[0].first_name,
+        "id":user_to_edit[0].id
     }
     return render(request, 'users/edit_user.html', context)
 
-def edit_user(request,id):
-
+def update_user(request,id_to_update):
     if request.session['status'] == False:
         return redirect('/')
+    messages.info(request, "")
+    errors = Users.objects.basic_validator(request.POST)
 
-    context = {
-        "word":"stuff"
-    }
-    return render(request, 'users/admin_edit_user.html', context)
+    if len(errors):
+        for tag, error in errors.iteritems():
+            messages.error(request, error, extra_tags=tag)
+    else:
+        user = Users.objects.filter(id=id_to_update)
+        user = user[0]
+
+        if request.POST['first_name']:
+            user.first_name = request.POST['first_name']
+        if request.POST['last_name']:
+            user.last_name = request.POST['last_name']
+        if request.POST['email']:
+            user.email = request.POST['email']
+        if request.POST['password']:
+            user.password = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt())
+
+        user.save() 
+        return redirect('/dashboard')
+    
+    return redirect('/users/admin_edit_user/{}'.format(id_to_update))
+
+def remove_user(request, id):
+    
+    if id != request.session['id']:
+
+        d = Users.objects.filter(id=id) 
+        d.delete()
+        return redirect('/dashboard/decision')
+
+    else:
+
+        # delete yourself and go back home
+        d = Users.objects.filter(id=id) 
+        d.delete()
+
+        return redirect('/')
 
 def create_message(request, id):
 
@@ -134,13 +190,13 @@ def create_comment(request, messageid, userid):
 
         return redirect('/register')
     '''
-def decision(request):
+def decision(request,id_to_edit):
 
     # decide to redirect to admin or to index depending on user leve
     print request.session['id']    
     user = Users.objects.get(id=request.session['id'])
     if user.user_level == '1':
-        return redirect('/users/edit_user')
+        return redirect('/users/edit_user/{}/'.format(id_to_edit))
     if user.user_level == '9':
-        return redirect('/users/admin_edit_user')
-    return redirect('/users/admin_edit_user')
+        return redirect('/users/admin_edit_user/{}/'.format(id_to_edit))
+    return redirect('/users/admin_edit_user/{}/'.format(id_to_edit))

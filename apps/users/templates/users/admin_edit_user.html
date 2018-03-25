@@ -32,7 +32,8 @@
       </form>
       </li>
       <li>
-      <form action="/users/decision/" method="post">    
+     <!-- profile shows my profile-->
+      <form action="/users/show_profile/{{request.session.id}}/" method="post">    
         {% csrf_token %}
           <input type="submit" value="Profile" style="border:none;background:none;color:gray;padding:15px;">
       </form>
@@ -51,15 +52,14 @@
         {% endif %}
     </div>
     <div class="container">
-      <h2>Edit User</h2>
-      <form action="/users/edit/" method="POST">
+      <h2>Edit {{first_name}}</h2>
+      <form action="/users/update_user/{{id}}/" method="POST">
         {% csrf_token %}
         
         <input name="first_name" type="text" placeholder="first name"><br><br> 
         <input name="last_name" type="text" placeholder="last name"><br><br> 
         <input name="email" type="text" placeholder="email"><br><br> 
         <input name="password" type="text" placeholder="password"><br><br> 
-        <input name="confirm_password" type="text" placeholder="confirm password"><br><br> 
         <input type="submit" value="submit"><br>
       </form>
     </div>
