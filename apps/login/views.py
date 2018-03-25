@@ -33,6 +33,7 @@ def register(request):
 def enter(request):
 
     try:
+        messages.info(request, "")
 
         user = Users.objects.get(email=request.POST['email'])
 
@@ -45,10 +46,13 @@ def enter(request):
             return redirect('/users/show/{}'.format(user.id))
 
     except:
+        messages.info(request, "Bad Login")
         return redirect('/signin')        
 
 
 def create(request):
+
+    messages.info(request, "")
 
     errors = Users.objects.basic_validator(request.POST)
 
@@ -58,8 +62,13 @@ def create(request):
     else:
 
         password_hash = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt())
-        Users.objects.create(first_name=request.POST['first_name'],last_name=request.POST['last_name'],email=request.POST['email'],password=password_hash, user_level=1)
+        Users.objects.create(first_name=request.POST['first_name'],
+                             last_name=request.POST['last_name'],
+                             email=request.POST['email'],
+                             password=password_hash, user_level=1)
+
         request.session['status'] = True
+
         user = Users.objects.get(email=request.POST['email'])
         request.session['id'] = user.id
         request.session['first_name'] = user.first_name

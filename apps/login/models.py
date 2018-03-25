@@ -8,31 +8,43 @@ class UsersManager(models.Manager):
     def basic_validator(self, postData):
 
         errors = {}
+
         try:
             if not re.search("[a-zA-Z]{2,30}",postData['first_name']):
                 errors['first_name'] = "first name must be at least two characters and only letters"
         except:
             pass
+
         try:
             if not re.search("[a-zA-Z]{2,30}",postData['last_name']):
                 errors['last_name'] = "first name must be at least two characters and only letters"
         except:
             pass
+
         try:
             if not re.match("^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$",postData['email']):
                 errors['email'] = "not a valid email"
         except:
             pass
+
         try:
             if len(postData['password']) < 9:
                 errors['password'] = "password is required and must be at least 8 characters"
         except:
             pass
+
         try:
             if not postData['password'] == postData['confirm_password']:
                 errors['password'] = "password is not same as confirm password" 
         except:
             pass
+
+        try:
+            if Users.objects.get(email=postData['email']):
+                errors['email'] = "that email already exists for a user" 
+        except:
+            pass
+
         return errors
 
 
