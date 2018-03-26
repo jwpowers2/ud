@@ -29,7 +29,7 @@
    # mod the primary urls.py file to include the application
 
       # i.e.
-```
+```python
 from django.conf.urls import url, include
 from django.contrib import admin
 
@@ -40,7 +40,7 @@ urlpatterns = [
 ```
 ### mod the urls.py file in the actual application (create it first) and label view.<method you want to fire on that path>
 
-```
+```python
 from django.conf.urls import url
 from . import views
 
