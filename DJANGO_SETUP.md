@@ -14,7 +14,7 @@
 
 3. create the dunder file
 
-    touch __init__.py
+    "touch __init__.py"
 
 4. create the django app
 
