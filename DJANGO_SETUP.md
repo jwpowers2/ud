@@ -1,4 +1,4 @@
-#instructions for django project setup
+# Instructions for django project setup
 
 1. create the django project
 
@@ -28,7 +28,7 @@
 
    # mod the primary urls.py file to include the application
 
-      # i.e.
+      
 ```python
 from django.conf.urls import url, include
 from django.contrib import admin
@@ -49,7 +49,7 @@ urlpatterns = [
 ]
 ```
 7. create the view methods, create the views you want to fire for the app routes
-```
+```python
 def index(request):
 
     context = {
@@ -68,14 +68,14 @@ def index(request):
     add img, js, css dir to static/name of app 
 
 9. activate and use session in django
-```
+```python
 python manage.py makemigrations
 python manage.py migrate
 ```
 only use dot notation to get session vars, bracket notation to set 
 
 10. apply csrf tokens in forms
-```
+```python
 {% csrf_token %}   
 ```
  
